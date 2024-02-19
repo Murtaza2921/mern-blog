@@ -9,6 +9,21 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
+
+  const handleSignout = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+        console.log(error.message);
+      }
+    } catch (error) {}
+  };
   return (
     <Navbar className="border-b-2">
       <Link
@@ -58,7 +73,7 @@ export default function Header() {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            <Dropdown.Item onClick={handleSignout()}>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/sign-in">
